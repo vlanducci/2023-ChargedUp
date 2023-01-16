@@ -10,6 +10,7 @@ using namespace behaviour;
 void Robot::RobotInit() {
   /* Create a new intake */
   intake = new Intake(map.intake.config);
+  // testClimber = new TestClimber(map.testClimber.config);
 }
 void Robot::RobotPeriodic() {
   /* Update the intake */

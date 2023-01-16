@@ -16,7 +16,7 @@ void Intake::OnUpdate(units::second_t dt) {
   case IntakeState::kIntaking:
     voltage = _config.intakeVoltage;
     /* If we have a gear, move to kFull */
-    if (_config.gearPresenceSensor->Get())
+    if (_config.gearPresenceSensor->Get()) // if == 1?
       _state = IntakeState::kFull;
     break;
   case IntakeState::kFull:
@@ -31,6 +31,7 @@ void Intake::OnUpdate(units::second_t dt) {
   }
 
   _config.gearbox.transmission->SetVoltage(voltage);
+  
 }
 
 void Intake::SetIntaking() {
