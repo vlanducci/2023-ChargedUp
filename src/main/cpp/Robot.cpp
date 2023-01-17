@@ -63,10 +63,16 @@ void Robot::TeleopInit() {
     sched->Schedule(make<DrivebasePoseBehaviour>(swerve, frc::Pose2d(1_m, 1_m, 0_rad)));
   });
 
-
 }
 
-void Robot::TeleopPeriodic() { }
+void Robot::TeleopPeriodic() {
+  if (map.controllers.codriver.GetAButton())
+    sideIntake->SetIntaking();
+  if (map.controllers.codriver.GetBButton())
+    sideIntake->SetOuttaking();
+  if (map.controllers.codriver.GetXButton())
+    sideIntake->SetPistons();
+ }
 
 void Robot::DisabledInit() { }
 void Robot::DisabledPeriodic() { }
