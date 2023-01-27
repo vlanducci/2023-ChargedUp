@@ -15,6 +15,12 @@ void Robot::RobotInit() {
     return make<ArmavatorManualBehaviour>(armavator, map.controllers.codriver);
   });
 
+  gripper = new Gripper(map.gripper.config);
+  BehaviourScheduler::GetInstance()->Register(gripper);
+  gripper->SetDefaultBehaviour([this]() {
+    return make<GripperManualBehaviour>(gripper, map.controllers.codriver);
+  });
+
   // swerve = new wom::SwerveDrive(map.SwerveBase.config, frc::Pose2d());
   // BehaviourScheduler::GetInstance()->Register(swerve);
   // swerve->SetDefaultBehaviour([this]() {
@@ -34,6 +40,7 @@ void Robot::RobotPeriodic() {
 
   armavator->OnUpdate(dt);
   // swerve->OnUpdate(dt);
+  gripper->OnUpdate(dt);
 }
 
 void Robot::AutonomousInit() { }

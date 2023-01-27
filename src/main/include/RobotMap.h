@@ -4,6 +4,7 @@
 #include "Arm.h"
 #include "Elevator.h"
 #include "Armavator.h"
+#include "Gripper.h"
 #include "Gyro.h"
 #include "behaviour/ArmavatorBehaviour.h"
 
@@ -94,9 +95,18 @@ struct RobotMap {
   }; Armavator armavator;
 
   struct ArmTable {
-    
-  std::shared_ptr<nt::NetworkTable> armManualTable = nt::NetworkTableInstance::GetDefault().GetTable("armManual");
+    std::shared_ptr<nt::NetworkTable> armManualTable = nt::NetworkTableInstance::GetDefault().GetTable("armManual");
   }; ArmTable armTable;
+
+  struct Gripper {
+    wom::MotorVoltageController rightGripperMotor{new WPI_TalonSRX(999)};
+    wom::MotorVoltageController leftGripperMotor{new WPI_TalonSRX(999)};
+
+    GripperConfig config{
+      &rightGripperMotor,
+      &leftGripperMotor
+    };
+  }; Gripper gripper;
 
   // struct SwerveBase{
   //   wom::NavX gyro;

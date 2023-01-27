@@ -12,6 +12,7 @@
 #include "behaviour/BehaviourScheduler.h"
 #include "behaviour/Behaviour.h"
 #include "behaviour/SwerveBaseBehaviour.h"
+#include "behaviour/GripperBehaviour.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/event/BooleanEvent.h>
@@ -39,5 +40,6 @@ class Robot : public frc::TimedRobot {
   
   RobotMap map;
   Armavator *armavator;
+  Gripper *gripper;
   wom::SwerveDrive *swerve;
 };
