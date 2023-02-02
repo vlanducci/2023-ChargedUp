@@ -9,11 +9,12 @@ SideIntakeBehaviour::SideIntakeBehaviour(SideIntake *sideIntake, frc::XboxContro
 void SideIntakeBehaviour::OnStart() {}
 
 void SideIntakeBehaviour::OnTick(units::second_t dt) {
-  if (_codriver.GetLeftBumper()) {
-    sideIntake->SetIntaking();
-  } else if (_codriver.GetRightBumper()) {
-    sideIntake->SetOuttaking();
-  } else if (_codriver.GetLeftTriggerAxis()>0.15)  {
+  if (_codriver.GetLeftY()>0.15) {
+    sideIntake->SetIntaking(_codriver.GetLeftY());
+  sideIntake->SetIntaking(_codriver.GetLeftY());
+  // if (_codriver.GetRightBumper()) {
+  //   sideIntake->SetOuttaking(_codriver.GetLeftY());
+  } else if (_codriver.GetAButton()) {
     sideIntake->SetPistons();
   } else {
     sideIntake->SetIdle();

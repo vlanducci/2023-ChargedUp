@@ -11,8 +11,9 @@
 #include <frc/XboxController.h>
 #include <ctre/Phoenix.h>
 #include <frc/DoubleSolenoid.h>
-
 #include "drivetrain/SwerveDrive.h"
+#include <frc/DigitalInput.h>
+#include <networktables/NetworkTableInstance.h>
 
 #include <iostream>
 
@@ -211,17 +212,24 @@ struct RobotMap {
 
   struct SideIntakeSystem {
 
-    wom::MotorVoltageController rightIntakeMotor{new WPI_TalonSRX(999)};
-    wom::MotorVoltageController leftIntakeMotor{new WPI_TalonSRX(999)};
+    wom::MotorVoltageController rightIntakeMotor{new WPI_TalonSRX(4)};
+    wom::MotorVoltageController leftIntakeMotor{new WPI_TalonSRX(5)};
 
     frc::DoubleSolenoid claspSolenoid{1, frc::PneumaticsModuleType::CTREPCM, 999, 999};  // change chanel values // grab pistons
     frc::DoubleSolenoid deploySolenoid{1, frc::PneumaticsModuleType::CTREPCM, 999, 999};  // change chanel values // move pistons
+
+    // Need to make library for Time of Flight sensor
+
+    frc::DigitalInput frontBeamBreak{999};
+    frc::DigitalInput backBeamBreak{999};
 
     SideIntakeConfig config{
       &claspSolenoid,
       &deploySolenoid,
       &rightIntakeMotor,
-      &leftIntakeMotor
+      &leftIntakeMotor,
+      &frontBeamBreak,
+      &backBeamBreak
     };
   }; 
   SideIntakeSystem sideIntake;

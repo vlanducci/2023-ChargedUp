@@ -4,6 +4,8 @@
 #include "behaviour/HasBehaviour.h"
 #include <frc/DoubleSolenoid.h>
 #include <ctre/Phoenix.h>
+#include <frc/DigitalInput.h>
+#include <networktables/NetworkTableInstance.h>
 
 
 struct SideIntakeConfig {
@@ -11,13 +13,16 @@ struct SideIntakeConfig {
   frc::DoubleSolenoid *deploySolenoid;
   wom::MotorVoltageController *rightIntakeMotor;
   wom::MotorVoltageController *leftIntakeMotor;
+  frc::DigitalInput *frontBeamBreak;
+  frc::DigitalInput *backBeamBreak;
 };
 
 enum class SideIntakeState {
   kIdle,
   kIntaking,
+  kOuttaking,
   kMovePiston,
-  kOuttaking
+  kHolding
 };
 
 class SideIntake : public behaviour::HasBehaviour {
@@ -27,17 +32,24 @@ class SideIntake : public behaviour::HasBehaviour {
   void OnUpdate(units::second_t dt);
 
   void SetIdle();
-  void SetIntaking();
+  void SetIntaking(float triggerVal);
+  void SetOuttaking(float triggerVal);
   void SetPistons();
-  void SetOuttaking();
+  void SetHolding();
+
 
   SideIntakeState GetState() const;
 
  private:
+  nt::NetworkTableInstance _ntInstance = nt::NetworkTableInstance::GetDefault();
+
   SideIntakeConfig _config;
   SideIntakeState _state = SideIntakeState::kIdle;
 
-  units::volt_t intakeVoltage = 10_V;
-  units::volt_t outtakeVoltage = -7_V;
+  units::volt_t manualVoltage = 0_V;
+  // units::volt_t intakeVoltage = 7_V;
+  // units::volt_t outtakeVoltage = 3_V;
   units::volt_t holdVoltage = 2_V;
+  units::volt_t manualIntakeVoltage = 0_V;
+  units::volt_t manualOuttakeVoltage = 2_V;
 };
