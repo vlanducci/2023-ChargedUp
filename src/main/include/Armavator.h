@@ -33,7 +33,7 @@ struct ArmavatorPosition {
 //creates the states used to control the robot
 enum class ArmavatorState {
   kIdle,
-  kPosition,
+  kPosition, // holding it in place
   kManual
 };
 
@@ -50,9 +50,12 @@ class Armavator : public behaviour::HasBehaviour {
   void SetPosition(ArmavatorPosition pos);
   void SetZeroing();
   void SetManual(units::volt_t arm, units::volt_t elevator);
+  void SetHolding();
 
   ArmavatorPosition GetCurrentPosition() const;
   bool IsStable() const;
+
+  ArmavatorState GetState() { return _state; }
 
   //creates the arm and the elevator
   wom::Arm *arm;

@@ -130,6 +130,8 @@ namespace wom {
     void SetIndividualTuning(int mod, units::radian_t angle, units::meters_per_second_t speed);
     void SetTuning(units::radian_t angle, units::meters_per_second_t speed);
 
+    bool IsMoving();
+
     void SetAccelerationLimit(units::meters_per_second_squared_t limit);
 
     void ResetPose(frc::Pose2d pose);

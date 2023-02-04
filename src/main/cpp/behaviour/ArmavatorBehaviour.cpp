@@ -1,8 +1,9 @@
 #include "behaviour/ArmavatorBehaviour.h"
+#include "behaviour/SwerveBaseBehaviour.h"
 
 //Constructs class
-ArmavatorGoToPositionBehaviour::ArmavatorGoToPositionBehaviour(Armavator *armavator, ArmavatorPosition setpoint)
-: _armavator(armavator), _setpoint(setpoint) {
+ArmavatorGoToPositionBehaviour::ArmavatorGoToPositionBehaviour(Armavator *armavator, ArmavatorPosition setpoint, wom::SwerveDrive *swerveDrivebase)
+: _armavator(armavator), _setpoint(setpoint), _swerveDrivebase(swerveDrivebase) {
   //tells code that the points are controlled (one point at a time) 
   Controls(armavator);
 };
@@ -62,6 +63,15 @@ void ArmavatorGoToPositionBehaviour::OnTick(units::second_t dt) {
   if (_armavator->IsStable())
     SetDone();
   // }  
+
+    if (_swerveDrivebase->IsRotating()) { //CHANGE TO WHEN MOVING IN GENERAL) {
+    _armavator->GetState();
+    if (_armavator->GetState() == ArmavatorState::kPosition) {
+      //
+    } else if (_armavator->GetState() != ArmavatorState::kPosition) {
+      //
+    }
+  }
 }
 
 

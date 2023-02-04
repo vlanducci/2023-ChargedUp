@@ -19,7 +19,7 @@ void Armavator::OnUpdate(units::second_t dt) {
   switch(_state) {
     case ArmavatorState::kIdle:
       break;
-    case ArmavatorState::kPosition:
+    case ArmavatorState::kPosition: // holds it into that pos
       arm->SetAngle(_setpoint.angle);
       elevator->SetPID(_setpoint.height);
       break;
@@ -50,7 +50,6 @@ void Armavator::SetManual(units::volt_t arm, units::volt_t elevator) {
   _rawArm = arm;
   _rawElevator = elevator;
 }
-
 
 //returns the current position
 ArmavatorPosition Armavator::GetCurrentPosition() const {

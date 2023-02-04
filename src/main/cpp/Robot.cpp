@@ -125,6 +125,9 @@ void Robot::TeleopInit() {
       sched->Schedule(make<ArmavatorGoToPositionBehaviour>(armavator, ArmavatorPosition{0.77_m, 45_deg}));
     });
   }
+  /*if (drivebaseposbehaviour.rotation changing every 1sec) {
+    lock armavator in place
+  }*/
 
   // if(!map.controllers.codriver.GetAButton() && !map.controllers.codriver.GetBButton() && map.controllers.codriver.GetRightTriggerAxis() <= 0.05 && map.controllers.codriver.GetLeftTriggerAxis() <= 0.05) {
   //   map.armavator.arm.gearbox.transmission->SetVoltage(0_V);
