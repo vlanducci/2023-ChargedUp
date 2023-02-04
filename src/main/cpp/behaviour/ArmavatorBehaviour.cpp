@@ -123,6 +123,7 @@ void ArmavatorRawBehaviour::OnStart() {
 
 void ArmavatorRawBehaviour::OnTick(units::second_t dt) {
   //Raw Positioning
+  getCorrectAngle(height);
   _armavator->SetManual(
     -_codriver.GetLeftY() * 9_V,
     -_codriver.GetRightY() * 9_V

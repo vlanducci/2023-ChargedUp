@@ -50,6 +50,23 @@ class ArmavatorRawBehaviour : public behaviour::Behaviour {
   //constructor
   ArmavatorRawBehaviour(Armavator *armavator, frc::XboxController &codriver);
 
+  units::radian_t getCorrectAngle(units::meters height = 0_meter) {
+    if (height < 0.28_m) {
+      _setpoint.angle == 0_deg;
+    } else {
+      if (height => 0.28_meter && height < 0.88) {
+        _setpoint.angle => 0_deg && _setpoint.angle < 90_deg;
+      } else if (height => 0.88_meter && height < 1.18) {
+        _setpoint.angle => -45_deg && _setpoint.angle < 90_deg;
+      } else if (height => 1.18_meter && height < 1.33) {
+        _setpoint.angle => -45_deg && _setpoint.angle < 180_deg;
+      } else if (height == 1.33) {
+        _setpoint.angle => -90_deg && _setpoint.angle < 270_deg;
+      }
+    }
+    return _setpoint.angle;
+  }
+
   void OnStart() override;
   void OnTick(units::second_t dt) override;
  private:
