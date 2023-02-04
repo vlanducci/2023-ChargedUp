@@ -125,22 +125,13 @@ void ArmavatorRawBehaviour::OnStart() {
 void ArmavatorRawBehaviour::OnTick(units::second_t dt) {
   //Raw Positioning
   _setpoint.angle = getCorrectAngle(_setpoint.height);
-  _armavator->SetManual(
+  _armavator->SetRaw(
     -_codriver.GetLeftY() * 9_V,
     -_codriver.GetRightY() * 9_V
   );
   if (_codriver.GetRightY() < 0.05 && _codriver.GetLeftY() < 0.05) {
-      _setpoint = _armavator->GetCurrentPosition();
-      _armavator->SetPosition(_setpoint);
-    }
-
-  if(_setpoint.angle != getCorrectAngle()) {
-    //move arm to correct place
-    if(_setpoint.angle > getCorrectAngle()) {
-      _armavator->SetPosition({0.2_m, 0_deg}); //CHANGE SO THAT THE ARM MOVES TO THE NEARSEST SAFE/CORRRECT POSE
-    } else if (_setpoint.angle < getCorrectAngle()) {
-      _armavator->SetPosition({0.2_m, 0_deg}); //CHANGE SO THAT THE ARM MOVES TO THE NEARSEST SAFE/CORRRECT POSE
-    }
+    _setpoint = _armavator->GetCurrentPosition();
+    _armavator->SetPosition(_setpoint);
   }
 
   //if (setpoint.angle > _height || setpoint.angle < _height) {

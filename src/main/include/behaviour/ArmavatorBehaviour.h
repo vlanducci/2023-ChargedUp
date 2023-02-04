@@ -50,21 +50,29 @@ class ArmavatorRawBehaviour : public behaviour::Behaviour {
   //constructor
   ArmavatorRawBehaviour(Armavator *armavator, frc::XboxController &codriver);
 
+
+  units::radian_t checkAngleLimits(units::radian_t value, units::radian_t lowerLimit, units::radian_t upperLimit) {
+    if (value >= lowerLimit && value < upperLimit) {
+      return value;
+    } else {
+      return value < lowerLimit ? lowerLimit : upperLimit;
+    }
+  }
+
   units::radian_t getCorrectAngle(units::meter_t height = 0_m) {
     if (height < 0.28_m) {
-      _setpoint.angle == 0_deg;
+      return 0_rad;
     } else {
       if (height >= 0.28_m && height < 0.88_m) {
-        _setpoint.angle >= 0_deg && _setpoint.angle < 90_deg;
+        return checkAngleLimits(_setpoint.angle, 0_deg, 90_deg);
       } else if (height >= 0.88_m && height < 1.18_m) {
-        _setpoint.angle >= -45_deg && _setpoint.angle < 90_deg;
+        return checkAngleLimits(_setpoint.angle, -45_deg, 90_deg);
       } else if (height >= 1.18_m && height < 1.33_m) {
-        _setpoint.angle >= -45_deg && _setpoint.angle < 180_deg;
+        return checkAngleLimits(_setpoint.angle, -45_deg, 180_deg);
       } else if (height == 1.33_m) {
-        _setpoint.angle >= -90_deg && _setpoint.angle < 270_deg;
+        return checkAngleLimits(_setpoint.angle, -90_deg, 270_deg);;
       }
     }
-    return _setpoint.angle;
   }
 
   void OnStart() override;

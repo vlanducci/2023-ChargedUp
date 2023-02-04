@@ -23,7 +23,7 @@ void Armavator::OnUpdate(units::second_t dt) {
       arm->SetAngle(_setpoint.angle);
       elevator->SetPID(_setpoint.height);
       break;
-    case ArmavatorState::kManual:
+    case ArmavatorState::kRaw:
       arm->SetRaw(_rawArm);
       elevator->SetManual(_rawElevator);
       break;
@@ -45,8 +45,8 @@ void Armavator::SetPosition(ArmavatorPosition pos) {
 }
 
 //manual state setup
-void Armavator::SetManual(units::volt_t arm, units::volt_t elevator) {
-  _state = ArmavatorState::kManual;
+void Armavator::SetRaw(units::volt_t arm, units::volt_t elevator) {
+  _state = ArmavatorState::kRaw;
   _rawArm = arm;
   _rawElevator = elevator;
 }

@@ -34,7 +34,7 @@ struct ArmavatorPosition {
 enum class ArmavatorState {
   kIdle,
   kPosition, // holding it in place
-  kManual
+  kRaw
 };
 
 //the behaviour class information
@@ -49,7 +49,7 @@ class Armavator : public behaviour::HasBehaviour {
   void SetIdle();
   void SetPosition(ArmavatorPosition pos);
   void SetZeroing();
-  void SetManual(units::volt_t arm, units::volt_t elevator);
+  void SetRaw(units::volt_t arm, units::volt_t elevator);
 
   ArmavatorPosition GetCurrentPosition() const;
   bool IsStable() const;
