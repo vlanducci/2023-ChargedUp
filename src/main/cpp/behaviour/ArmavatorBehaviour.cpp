@@ -1,9 +1,8 @@
 #include "behaviour/ArmavatorBehaviour.h"
-#include "behaviour/SwerveBaseBehaviour.h"
 
 //Constructs class
-ArmavatorGoToPositionBehaviour::ArmavatorGoToPositionBehaviour(Armavator *armavator, ArmavatorPosition setpoint, wom::SwerveDrive *swerveDrivebase)
-: _armavator(armavator), _setpoint(setpoint), _swerveDrivebase(swerveDrivebase) {
+ArmavatorGoToPositionBehaviour::ArmavatorGoToPositionBehaviour(Armavator *armavator, ArmavatorPosition setpoint)
+: _armavator(armavator), _setpoint(setpoint) {
   //tells code that the points are controlled (one point at a time) 
   Controls(armavator);
 };
@@ -63,15 +62,6 @@ void ArmavatorGoToPositionBehaviour::OnTick(units::second_t dt) {
   if (_armavator->IsStable())
     SetDone();
   // }  
-
-    if (_swerveDrivebase->IsRotating()) { //CHANGE TO WHEN MOVING IN GENERAL) {
-    _armavator->GetState();
-    if (_armavator->GetState() == ArmavatorState::kPosition) {
-      //
-    } else if (_armavator->GetState() != ArmavatorState::kPosition) {
-      //
-    }
-  }
 }
 
 
@@ -131,6 +121,7 @@ ArmavatorRawBehaviour::ArmavatorRawBehaviour(Armavator *armavator, frc::XboxCont
 void ArmavatorRawBehaviour::OnStart() {
 }
 
+
 void ArmavatorRawBehaviour::OnTick(units::second_t dt) {
   //Raw Positioning
   _setpoint.angle = getCorrectAngle(_setpoint.height);
@@ -138,6 +129,10 @@ void ArmavatorRawBehaviour::OnTick(units::second_t dt) {
     -_codriver.GetLeftY() * 9_V,
     -_codriver.GetRightY() * 9_V
   );
+  if (_codriver.GetRightY() < 0.05 && _codriver.GetLeftY() < 0.05) {
+      _setpoint = _armavator->GetCurrentPosition();
+      _armavator->SetPosition(_setpoint);
+    }
 
   if(_setpoint.angle != getCorrectAngle()) {
     //move arm to correct place

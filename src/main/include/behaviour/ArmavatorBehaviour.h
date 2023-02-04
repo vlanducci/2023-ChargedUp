@@ -14,7 +14,7 @@ class ArmavatorGoToPositionBehaviour : public behaviour::Behaviour {
    using grid_t = ArmavatorConfig::grid_t;
 
    //constructor for class
-   ArmavatorGoToPositionBehaviour(Armavator *armavator, ArmavatorPosition setpoint, wom::SwerveDrive *swerveDriveBase );
+   ArmavatorGoToPositionBehaviour(Armavator *armavator, ArmavatorPosition setpoint);
 
    //Override the OnStart abd OnTick functions, while setting the units for when Armavator runs
    void OnStart() override;
@@ -23,7 +23,6 @@ class ArmavatorGoToPositionBehaviour : public behaviour::Behaviour {
  private:
    //stores nessesary information that can't be changed
    Armavator *_armavator;
-   wom::SwerveDrive *_swerveDrivebase;
    ArmavatorPosition _setpoint;
    std::deque<grid_t::GridPathNode<units::second>> _waypoints;
 };
