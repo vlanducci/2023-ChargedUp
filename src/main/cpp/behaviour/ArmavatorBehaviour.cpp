@@ -111,7 +111,7 @@ void ArmavatorGoToPositionBehaviour::OnTick(units::second_t dt) {
 // }
 
 ArmavatorRawBehaviour::ArmavatorRawBehaviour(Armavator *armavator, frc::XboxController &codriver)
-: _armavator(armavator), _codriver(codriver) {
+: _armavator(armavator), _codriver(codriver){
   //tells code that the points are controlled (one point at a time) 
   _setpoint.height = 0.0_m;
   _setpoint.angle = 0.0_deg;
@@ -123,11 +123,25 @@ void ArmavatorRawBehaviour::OnStart() {
 
 void ArmavatorRawBehaviour::OnTick(units::second_t dt) {
   //Raw Positioning
-  getCorrectAngle(height);
+  _setpoint.angle = getCorrectAngle(_setpoint.height);
   _armavator->SetManual(
     -_codriver.GetLeftY() * 9_V,
     -_codriver.GetRightY() * 9_V
   );
+
+  if(_setpoint.angle != getCorrectAngle()) {
+    //move arm to correct place
+    if(_setpoint.angle > getCorrectAngle()) {
+      _armavator->SetPosition({0.2_m, 0_deg}); //CHANGE SO THAT THE ARM MOVES TO THE NEARSEST SAFE/CORRRECT POSE
+    } else if (_setpoint.angle < getCorrectAngle()) {
+      _armavator->SetPosition({0.2_m, 0_deg}); //CHANGE SO THAT THE ARM MOVES TO THE NEARSEST SAFE/CORRRECT POSE
+    }
+  }
+
+  //if (setpoint.angle > _height || setpoint.angle < _height) {
+    //setpoint.angle moves into nearest correct positionS
+  //}
+
   // if(!_codriver.GetRightY() && !_codriver.GetLeftY()) {
   //   _armavator->arm->GetConfig().gearbox.transmission->SetVoltage(0_V);
   //   _armavator->elevator->SetManual(0_V);
