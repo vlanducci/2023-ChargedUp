@@ -117,20 +117,20 @@ void Robot::TeleopInit() {
 
   swerve->OnStart();
 
-  if(!map.controllers.codriver.GetAButton() && !map.controllers.codriver.GetBButton() && !map.controllers.codriver.GetXButton() && !map.controllers.codriver.GetYButton()) {
+  if(!map.controllers.tester.GetAButton() && !map.controllers.tester.GetBButton() && !map.controllers.tester.GetXButton() && !map.controllers.tester.GetYButton()) {
    sched->Schedule(make<ArmavatorGoToPositionBehaviour>(armavator, ArmavatorPosition{armavator->_setpoint.height, armavator->_setpoint.angle}));
   } else {
     //sets the premade positions usings buttonsS
-    map.controllers.codriver.A(&loop).Rising().IfHigh([sched, this]() {
+    map.controllers.tester.A(&loop).Rising().IfHigh([sched, this]() {
       sched->Schedule(make<ArmavatorGoToPositionBehaviour>(armavator, ArmavatorPosition{1.0_m, 0_deg}));
     });
-    map.controllers.codriver.B(&loop).Rising().IfHigh([sched, this]() {
+    map.controllers.tester.B(&loop).Rising().IfHigh([sched, this]() {
       sched->Schedule(make<ArmavatorGoToPositionBehaviour>(armavator, ArmavatorPosition{1.2_m, -75_deg}));
     });
-    map.controllers.codriver.X(&loop).Rising().IfHigh([sched, this]() {
+    map.controllers.tester.X(&loop).Rising().IfHigh([sched, this]() {
       sched->Schedule(make<ArmavatorGoToPositionBehaviour>(armavator, ArmavatorPosition{1.0_m, 90_deg}));
     });
-    map.controllers.codriver.Y(&loop).Rising().IfHigh([sched, this]() {
+    map.controllers.tester.Y(&loop).Rising().IfHigh([sched, this]() {
       sched->Schedule(make<ArmavatorGoToPositionBehaviour>(armavator, ArmavatorPosition{0.77_m, 45_deg}));
     });
   }

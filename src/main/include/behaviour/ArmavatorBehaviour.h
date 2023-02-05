@@ -48,7 +48,7 @@ class ArmavatorRawBehaviour : public behaviour::Behaviour {
   using grid_t = ArmavatorConfig::grid_t;
 
   //constructor
-  ArmavatorRawBehaviour(Armavator *armavator, frc::XboxController &codriver);
+  ArmavatorRawBehaviour(Armavator *armavator, frc::XboxController &codriver, frc::XboxController &tester);
 
 
   units::radian_t checkAngleLimits(units::radian_t value, units::radian_t lowerLimit, units::radian_t upperLimit) {
@@ -83,4 +83,5 @@ class ArmavatorRawBehaviour : public behaviour::Behaviour {
   ArmavatorPosition _setpoint;
   std::deque<grid_t::GridPathNode<units::second>> _waypoints;
   frc::XboxController &_codriver;
+  frc::XboxController &_tester;
 };

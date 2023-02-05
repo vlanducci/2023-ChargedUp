@@ -26,6 +26,7 @@ struct RobotMap {
     //sets driver station numbers for the controllers
     frc::XboxController driver{0};
     frc::XboxController codriver{1};
+    frc::XboxController tester{2};
   };
   Controllers controllers;
 
