@@ -18,6 +18,7 @@ void Armavator::OnUpdate(units::second_t dt) {
 
   switch(_state) {
     case ArmavatorState::kIdle:
+      units::volt_t voltage{0};
       break;
     case ArmavatorState::kPosition: // holds it into that pos
       arm->SetAngle(_setpoint.angle);
