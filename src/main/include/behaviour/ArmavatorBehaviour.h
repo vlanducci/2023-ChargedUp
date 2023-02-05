@@ -48,7 +48,7 @@ class ArmavatorRawBehaviour : public behaviour::Behaviour {
   using grid_t = ArmavatorConfig::grid_t;
 
   //constructor
-  ArmavatorRawBehaviour(Armavator *armavator, frc::XboxController &codriver, frc::XboxController &tester);
+  ArmavatorRawBehaviour(Armavator *armavator, frc::XboxController &tester);
 
 
   units::radian_t checkAngleLimits(units::radian_t value, units::radian_t lowerLimit, units::radian_t upperLimit) {
@@ -60,16 +60,16 @@ class ArmavatorRawBehaviour : public behaviour::Behaviour {
   }
 
   units::radian_t getCorrectAngle(units::meter_t height = 0_m) {
-    if (height < 0.28_m) {
+    if (height < 0.51_m) {
       return 0_rad;
     } else {
-      if (height >= 0.28_m && height < 0.88_m) {
+      if (height >= 0.51_m && height < 0.81_m) {
         return checkAngleLimits(_setpoint.angle, 0_deg, 90_deg);
-      } else if (height >= 0.88_m && height < 1.18_m) {
+      } else if (height >= 0.81_m && height < 1.21_m) {
         return checkAngleLimits(_setpoint.angle, -45_deg, 90_deg);
-      } else if (height >= 1.18_m && height < 1.33_m) {
+      } else if (height >= 1.21_m && height < 1.47_m) {
         return checkAngleLimits(_setpoint.angle, -45_deg, 180_deg);
-      } else if (height == 1.33_m) {
+      } else if (height == 1.47_m) {
         return checkAngleLimits(_setpoint.angle, -90_deg, 270_deg);;
       }
     }
@@ -82,6 +82,5 @@ class ArmavatorRawBehaviour : public behaviour::Behaviour {
 
   ArmavatorPosition _setpoint;
   std::deque<grid_t::GridPathNode<units::second>> _waypoints;
-  frc::XboxController &_codriver;
   frc::XboxController &_tester;
 };
