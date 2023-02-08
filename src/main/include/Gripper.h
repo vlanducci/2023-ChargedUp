@@ -3,16 +3,19 @@
 #include "Gearbox.h"
 #include "behaviour/HasBehaviour.h"
 #include <ctre/Phoenix.h>
+#include "TOF.h"
 
 struct GripperConfig {
   wom::MotorVoltageController *rightGripperMotor;
   wom::MotorVoltageController *leftGripperMotor;
+  TOF *gamepiecePresence;
 };
 
 enum class GripperState {
   kIdle,
   kIntaking,
-  kOuttaking
+  kOuttaking,
+  kHolding
 };
 
 enum class GamePieceType {
@@ -29,6 +32,7 @@ class Gripper : public behaviour::HasBehaviour {
   void SetIdle();
   void SetIntaking(GamePieceType gpt);
   void SetOuttaking(GamePieceType gpt);
+  void SetHolding();
 
  private:
   GripperState _state = GripperState::kIdle;

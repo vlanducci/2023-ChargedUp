@@ -13,12 +13,20 @@ void Gripper::OnUpdate(units::second_t dt) {
       break;
 
     case GripperState::kIntaking:
-      if (_gamePieceType == GamePieceType::kCone) {
-        voltage = coneIntakeVoltage;
+      if (_config.gamepiecePresence->GetDistance() > 5_m) {
+        _state = GripperState::kHolding;
       } else {
-        voltage = cubeIntakeVoltage;
+        if (_gamePieceType == GamePieceType::kCone) {
+          voltage = coneIntakeVoltage;
+        } else {
+          voltage = cubeIntakeVoltage;
+        }
       } break;
-    
+
+    case GripperState::kHolding:
+      voltage = holdVoltage;
+      break;
+
     case GripperState::kOuttaking:
       if (_gamePieceType == GamePieceType::kCone) {
         voltage = coneOuttakeVoltage;
@@ -40,4 +48,8 @@ void Gripper::SetIntaking(GamePieceType gpt) {
 
 void Gripper::SetOuttaking(GamePieceType gpt) {
   _state = GripperState::kOuttaking;
+}
+
+void Gripper::SetHolding() {
+  _state = GripperState::kHolding;
 }

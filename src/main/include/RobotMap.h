@@ -7,6 +7,7 @@
 #include "Gripper.h"
 #include "Gyro.h"
 #include "behaviour/ArmavatorBehaviour.h"
+#include "TOF.h"
 
 #include <frc/XboxController.h>
 #include <ctre/Phoenix.h>
@@ -102,9 +103,12 @@ struct RobotMap {
     wom::MotorVoltageController rightGripperMotor{new WPI_TalonSRX(999)};
     wom::MotorVoltageController leftGripperMotor{new WPI_TalonSRX(999)};
 
+    TOF gamepiecePresence{frc::I2C::Port::kMXP};
+
     GripperConfig config{
       &rightGripperMotor,
-      &leftGripperMotor
+      &leftGripperMotor,
+      &gamepiecePresence
     };
   }; Gripper gripper;
 
