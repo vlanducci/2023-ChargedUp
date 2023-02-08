@@ -1,4 +1,5 @@
 #include "SideIntake.h"
+#include <units/length.h>
 
 using namespace frc;
 using namespace wom;
@@ -15,7 +16,7 @@ void SideIntake::OnUpdate(units::second_t dt) {
       break;
 
     case SideIntakeState::kIntaking:
-      if ((_config.frontBeamBreak->Get() == 1) && (_config.backBeamBreak->Get() == 1)) {
+      if ((_config.frontBeamBreak->Get()) && (_config.backBeamBreak->Get())) {
         _state = SideIntakeState::kHolding;
       } else {
         _ntInstance.GetTable("sideIntake")->GetEntry("One or no sensor detecting object in intake").SetDouble(0.0);
@@ -32,16 +33,15 @@ void SideIntake::OnUpdate(units::second_t dt) {
       break;
 
     case SideIntakeState::kHolding:
-      voltage = holdVoltage;
-      if ((_config.backBeamBreak->Get() == 0) && (_config.backBeamBreak->Get() == 0)) {
+      if ((!_config.backBeamBreak->Get()) && (!_config.backBeamBreak->Get()) && (_config.gripperTOF->GetDistance() > 5_m)) {  // tune this 
         _state = SideIntakeState::kIdle;
       } else {
         voltage = holdVoltage;
       }
       break;
   }
-    _config.leftIntakeMotor->SetVoltage(voltage);
-    _config.rightIntakeMotor->SetVoltage(voltage);
+    _config.leftMotorGearbox.transmission->SetVoltage(voltage);
+    _config.leftMotorGearbox.transmission->SetVoltage(voltage);
 };
 
 void SideIntake::SetIdle() {

@@ -3,18 +3,19 @@
 #include "Gearbox.h"
 #include "behaviour/HasBehaviour.h"
 #include <frc/DoubleSolenoid.h>
-#include <ctre/Phoenix.h>
 #include <frc/DigitalInput.h>
 #include <networktables/NetworkTableInstance.h>
+#include "TOF.h"
 
 
 struct SideIntakeConfig {
+  wom::Gearbox rightMotorGearbox;
+  wom::Gearbox leftMotorGearbox;
   frc::DoubleSolenoid *claspSolenoid;
   frc::DoubleSolenoid *deploySolenoid;
-  wom::MotorVoltageController *rightIntakeMotor;
-  wom::MotorVoltageController *leftIntakeMotor;
   frc::DigitalInput *frontBeamBreak;
   frc::DigitalInput *backBeamBreak;
+  TOF *gripperTOF;
 };
 
 enum class SideIntakeState {

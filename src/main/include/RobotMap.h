@@ -7,6 +7,7 @@
 #include "SideIntake.h"
 #include "Gyro.h"
 #include "behaviour/ArmavatorBehaviour.h"
+#include "TOF.h"
 
 #include <frc/XboxController.h>
 #include <ctre/Phoenix.h>
@@ -215,21 +216,36 @@ struct RobotMap {
     wom::MotorVoltageController rightIntakeMotor{new WPI_TalonSRX(4)};
     wom::MotorVoltageController leftIntakeMotor{new WPI_TalonSRX(5)};
 
-    frc::DoubleSolenoid claspSolenoid{1, frc::PneumaticsModuleType::CTREPCM, 999, 999};  // change chanel values // grab pistons
-    frc::DoubleSolenoid deploySolenoid{1, frc::PneumaticsModuleType::CTREPCM, 999, 999};  // change chanel values // move pistons
+    frc::DoubleSolenoid claspSolenoid{1, frc::PneumaticsModuleType::CTREPCM, 1, 2};  // change chanel values // grab pistons
+    frc::DoubleSolenoid deploySolenoid{1, frc::PneumaticsModuleType::CTREPCM, 3, 4};  // change chanel values // move pistons
 
     // Need to make library for Time of Flight sensor
 
-    frc::DigitalInput frontBeamBreak{999};
-    frc::DigitalInput backBeamBreak{999};
+    frc::DigitalInput frontBeamBreak{8};
+    frc::DigitalInput backBeamBreak{9};
+
+    TOF gripperTOF{frc::I2C::Port::kMXP};
+
+    wom::Gearbox rightMotorGearbox {
+      &rightIntakeMotor,
+      nullptr,
+      wom::DCMotor::Bag(1).WithReduction(1)  // might need to change that
+    };
+
+    wom::Gearbox leftMotorGearbox {
+      &leftIntakeMotor,
+      nullptr,
+      wom::DCMotor::Bag(1).WithReduction(1)  // might need to change that
+    };
 
     SideIntakeConfig config{
+      rightMotorGearbox,
+      leftMotorGearbox,
       &claspSolenoid,
       &deploySolenoid,
-      &rightIntakeMotor,
-      &leftIntakeMotor,
       &frontBeamBreak,
-      &backBeamBreak
+      &backBeamBreak, 
+      &gripperTOF
     };
   }; 
   SideIntakeSystem sideIntake;
