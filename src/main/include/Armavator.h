@@ -12,9 +12,14 @@
 #include <ctre/Phoenix.h>
 #include <units/math.h>
 #include "behaviour/HasBehaviour.h"
+#include <frc/DigitalInput.h>
 
 //the config class
 struct ArmavatorConfig {
+  frc::DigitalInput *lowerHE;
+  frc::DigitalInput *lowerMiddleHE;
+  frc::DigitalInput *highMiddleHE;
+  frc::DigitalInput *highHE;
   using grid_t = wom::DiscretisedOccupancyGrid<units::radian, units::meter>;
 
   //uses the configs from gthe arm and elevator, as well as includes the grid
@@ -27,7 +32,6 @@ struct ArmavatorConfig {
 struct ArmavatorPosition {
   units::meter_t height;
   units::radian_t angle;
-
 };
 
 //creates the states used to control the robot

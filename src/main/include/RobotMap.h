@@ -13,6 +13,7 @@
 #include <frc/XboxController.h>
 #include <ctre/Phoenix.h>
 #include <frc/DoubleSolenoid.h>
+#include <frc/DigitalInput.h>
 
 #include "drivetrain/SwerveDrive.h"
 #include <frc/DoubleSolenoid.h>
@@ -217,6 +218,11 @@ struct RobotMap {
     static constexpr units::kilogram_t armMass = 5_kg;
     static constexpr units::kilogram_t carriageMass = 5_kg;
 
+    frc::DigitalInput lowerHE{99};
+    frc::DigitalInput lowerMiddleHE{99};
+    frc::DigitalInput highMiddleHE{99};
+    frc::DigitalInput highHE{99};
+
     //stores nessesary info for arm
     struct Arm {
       //creates the motor used for the arm as well as the port it is plugged in
@@ -318,6 +324,7 @@ struct RobotMap {
     });
 
     ArmavatorConfig config {
+      &lowerHE, &lowerMiddleHE, &highMiddleHE, &highHE,
       arm.config, elevator.config, occupancyGrid
     };
   }; Armavator armavator;
