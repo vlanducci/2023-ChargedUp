@@ -8,6 +8,7 @@
 #include <units/length.h>
 #include <iostream>
 #include <math.h>
+#include "RobotMap.h"
 
 class ArmavatorGoToPositionBehaviour : public behaviour::Behaviour {
  public:
@@ -27,21 +28,18 @@ class ArmavatorGoToPositionBehaviour : public behaviour::Behaviour {
    std::deque<grid_t::GridPathNode<units::second>> _waypoints;
 };
 
-// class ArmavatorManualBehaviour : public behaviour::Behaviour {
-//  public:
-//   using grid_t = ArmavatorConfig::grid_t;
+class ArmavatorGoToSensor : public behaviour::Behaviour {
+ public:
+  ArmavatorGoToSensor(Armavator *armavator, ArmavatorPosition setpoint, frc::XboxController &controller);
 
-//   ArmavatorManualBehaviour(Armavator *armavator, frc::XboxController &codriver);
+  void OnStart() override;
+  void OnTick(units::second_t dt) override;
 
-//   void OnStart() override;
-//   void OnTick(units::second_t dt) override;
-//  private:
-//   Armavator *_armavator;
-
-//   ArmavatorPosition _setpoint;
-//   std::deque<grid_t::GridPathNode<units::second>> _waypoints;
-//   frc::XboxController &_codriver;
-// };
+ private:
+  Armavator *_armavator;
+  frc::XboxController &_controller;
+  ArmavatorPosition _setpoint;
+};
 
 class ArmavatorRawBehaviour : public behaviour::Behaviour {
  public:

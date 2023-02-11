@@ -223,6 +223,7 @@ struct RobotMap {
     frc::DigitalInput highMiddleHE{99};
     frc::DigitalInput highHE{99};
 
+
     //stores nessesary info for arm
     struct Arm {
       //creates the motor used for the arm as well as the port it is plugged in

@@ -10,21 +10,6 @@ ArmavatorGoToPositionBehaviour::ArmavatorGoToPositionBehaviour(Armavator *armava
 // Function for OnStart
 void ArmavatorGoToPositionBehaviour::OnStart() {
   std::cout << "On Start" << std::endl;
-  // Zero the elevator
-  // _armavator->elevator->SetZeroing();
-  
-  //Sets current position
-  // ArmavatorPosition Elevator
-  // ArmavatorPosition current = armavator->GetCurrentPosition();
-  //Sets positions information for the start and the end of the instructions
-  // grid_t::Idx_t start = armavator.config.grid.Discretise({current.angle, current.height});
-  // grid_t::Idx_t end = armavator.config.grid.Discretise({setpoint.angle, setpoint.height});
-  //Sets arm and elevator speeds for start and end
-  // waypoints = armavator->config.grid.AStar<units::second>(
-  //     start, end,
-  //     1 / (armavator->arm.MaxSpeed() * 0.8),
-  //     1 / (armavator->elevator.MaxSpeed() * 0.8)
-  // );
 }
 
 //Function for OnTick
@@ -40,75 +25,58 @@ void ArmavatorGoToPositionBehaviour::OnTick(units::second_t dt) {
   };
   _armavator->SetPosition(_setpoint);
 
-  //If statement for targetted waypoint position is empty
-  // if (!waypoints.empty()) {
-  //     grid_t::GridPathNode<units::second> waypoint = waypoints.front();
-  //     while (!waypoints.empty() && waypoint.cost <= GetRunTime()) {
-  //         waypoints.pop_front();
-  //         if (!waypoints.empty())
-  //             waypoint = waypoints.front();
-  //     }
-
-  //     ArmavatorPosition currentPosition = armavator->GetCurrentPosition();
-  //     grid_t::Idx_t current = armavator.config.grid.Discretise({currentPosition.angle, currentPosition.height});
-      
-  //     armavator->SetPosition({waypoint.position.y, waypoint.position.x});
-  
-  // //If waypoint is full, set next position
-  // } else {
-  //     armavator->SetPosition(setpoint);
-
-  //     //If the arm elevator is in correct final position, stop moving
   if (_armavator->IsStable())
     SetDone();
-  // }  
 }
 
 
-// ArmavatorManualBehaviour::ArmavatorManualBehaviour(Armavator *armavator, frc::XboxController &codriver)
-// : _armavator(armavator), _codriver(codriver) {
-//   //tells code that the points are controlled (one point at a time) 
-//   _setpoint.height = 0.0_m;
-//   _setpoint.angle = 0.0_deg;
-//   Controls(armavator);
-// };
+// Got to sensor on elevator code
 
-// void ArmavatorManualBehaviour::OnStart() {
+ArmavatorGoToSensor::ArmavatorGoToSensor(Armavator *armavator, ArmavatorPosition setpoint, frc::XboxController &controller) : _armavator(armavator), _setpoint(setpoint), _controller(controller){
+  Controls(armavator);
+}
 
-// }
+void ArmavatorGoToSensor::OnStart() {}
 
-// void ArmavatorManualBehaviour::OnTick(units::second_t dt) {
-//   // Manual Positioning
-//   // Elevator
-//   if (std::abs(_codriver.GetRightY()) > 0.15) {
-//     _setpoint.height = _setpoint.height + (_codriver.GetRightY() * 1.0_m);
-//   }
+void ArmavatorGoToSensor::OnTick(units::second_t dt) {
+  units::centimeter_t height;
+  double sensorHeight = 0;
+  if (_controller.GetAButton()) {
+    height = _armavator->lowerHEHeight;
+    sensorHeight = 1;
+  } else if (_controller.GetBButton()) {
+    height = _armavator->lowerMiddleHEHeight;
+    sensorHeight = 2;
+  } else if (_controller.GetXButton()) {
+    height = _armavator->highMiddleHEHeight;
+    sensorHeight = 3;
+  } else if (_controller.GetYButton()) {
+    height = _armavator->highHEHeight;
+    sensorHeight = 4;
+  } else {
+    _armavator->SetIdle();
+    sensorHeight = 0;
+  }
 
-//   // Angle
-//   if(std::abs(_codriver.GetLeftY()) > 0.15) {
-//     _setpoint.angle = _setpoint.angle + (_codriver.GetLeftY() * 1.0_deg);
-//   }
+  if ((sensorHeight == 1) && (_armavator->GetConfig().lowerHE) && (height != _armavator->elevator->GetHeight())) {
+    height = _setpoint.height;
+  } else if ((sensorHeight == 2) && (_armavator->GetConfig().lowerMiddleHE) && (height != _armavator->elevator->GetHeight())) {
+    height = _setpoint.height;
+  } else if ((sensorHeight == 3) && (_armavator->GetConfig().highMiddleHE) && (height != _armavator->elevator->GetHeight())) {
+    height = _setpoint.height;
+  } else if ((sensorHeight == 4) && (_armavator->GetConfig().highHE) && (height != _armavator->elevator->GetHeight())) {
+    height = _setpoint.height;
+  }
 
-//   // Set Position
-//   _armavator->SetPosition(_setpoint);
+  _setpoint.height = height; 
+  _armavator->SetPosition(_setpoint);
 
-//   if(!_codriver.GetAButton() && !_codriver.GetBButton() && !_codriver.GetXButton() && !_codriver.GetYButton()) {
-//     units::volt_t voltage{0};
-//   } else {
-//     if(_codriver.GetAButton()) {
-//       _armavator->SetPosition({0.2_m, 0_deg});
-//     }
-//     if(_codriver.GetBButton()) {
-//       _armavator->SetPosition({1.2_m, 75_deg});
-//     }
-//     if(_codriver.GetXButton()) {
-//       _armavator->SetPosition({1.0_m, 240_deg});
-//     }
-//     if(_codriver.GetYButton()) {
-//       _armavator->SetPosition({0_m, 0_deg});
-//     }
-//   }
-// }
+  if (_armavator->IsStable())
+    SetDone();
+}
+
+
+// Raw elevator code
 
 ArmavatorRawBehaviour::ArmavatorRawBehaviour(Armavator *armavator, frc::XboxController &tester)
 : _armavator(armavator), _tester(tester) {
