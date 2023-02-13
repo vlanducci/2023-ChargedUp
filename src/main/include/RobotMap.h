@@ -213,8 +213,8 @@ struct RobotMap {
 
   struct SideIntakeSystem {
 
-    wom::MotorVoltageController rightIntakeMotor{new WPI_TalonSRX(4)};
-    wom::MotorVoltageController leftIntakeMotor{new WPI_TalonSRX(5)};
+    wom::MotorVoltageController rightIntakeMotor{new WPI_VictorSPX(4)};
+    wom::MotorVoltageController leftIntakeMotor{new WPI_VictorSPX(5)};
 
     frc::DoubleSolenoid claspSolenoid{1, frc::PneumaticsModuleType::CTREPCM, 1, 2};  // change chanel values // grab pistons
     frc::DoubleSolenoid deploySolenoid{1, frc::PneumaticsModuleType::CTREPCM, 3, 4};  // change chanel values // move pistons
@@ -229,13 +229,13 @@ struct RobotMap {
     wom::Gearbox rightMotorGearbox {
       &rightIntakeMotor,
       nullptr,
-      wom::DCMotor::Bag(1).WithReduction(1)  // might need to change that
+      wom::DCMotor::Bag(1).WithReduction(10)  // might need to change that
     };
 
     wom::Gearbox leftMotorGearbox {
       &leftIntakeMotor,
       nullptr,
-      wom::DCMotor::Bag(1).WithReduction(1)  // might need to change that
+      wom::DCMotor::Bag(1).WithReduction(10)  // might need to change that
     };
 
     SideIntakeConfig config{
