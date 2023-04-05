@@ -9,7 +9,6 @@
 #include <frc/event/BooleanEvent.h>
 #include <networktables/NetworkTableInstance.h>
 
-
 using namespace frc;
 using namespace behaviour;
 
