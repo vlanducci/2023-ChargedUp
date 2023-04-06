@@ -17,7 +17,8 @@ namespace wom {
 
     wom::Gearbox leftGearbox;
     wom::Gearbox rightGearbox;
-    rev::SparkMaxRelativeEncoder armEncoder;
+    // rev::SparkMaxRelativeEncoder armEncoder;
+    rev::SparkMaxAlternateEncoder armEncoder;
     wom::PIDConfig<units::radian, units::volt> pidConfig;
 
     units::kilogram_t armMass;

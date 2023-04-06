@@ -262,8 +262,8 @@ struct ControlSystem {
       // wom::CANSparkMaxEncoder leftEncoder{&leftArmMotor, 100};
       // wom::CANSparkMaxEncoder rightEncoder{&rightArmMotor, 100};
 
-      rev::SparkMaxRelativeEncoder leftOtherArmEncoder = leftArmMotor.GetEncoder();
-      rev::SparkMaxRelativeEncoder rightOtherArmEncoder = rightArmMotor.GetEncoder();
+      rev::SparkMaxAlternateEncoder leftOtherArmEncoder = GetAlternateEncoder.GetA;
+      rev::SparkMaxAlternateEncoder rightOtherArmEncoder = GetAlternateEncoder.GetEncoder();
 
       //creates an instance of the arm gearbox
       wom::Gearbox leftGearbox {
